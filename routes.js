@@ -123,4 +123,17 @@ router.post('/:id/add-reservation/', async function(req, res, next) {
   }
 });
 
+router.post('/reservations/:r_id/edit', async function(req, res, next) {
+  try {
+    const reservationId = req.params.r_id;
+
+    const reservation = Reservation.getReservation(reservationId);
+    await reservation.save();
+
+    return res.redirect(`/${reservation.customer_id}/`);
+  } catch (err) {
+    return next(err);
+  }
+});
+
 module.exports = router;

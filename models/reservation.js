@@ -81,6 +81,23 @@ class Reservation {
     return results.rows.map(row => new Reservation(row));
   }
 
+  /** given a customer id, find their reservations. */
+
+  static async getReservation(reservationId) {
+    const results = await db.query(
+      `SELECT id, 
+           customer_id AS "customerId", 
+           num_guests AS "numGuests", 
+           start_at AS "startAt", 
+           notes AS "notes"
+         FROM reservations 
+         WHERE id = $1`,
+      [reservationId]
+    );
+
+    return results.rows[0];
+  }
+
   /** save this reservation. */
 
   async save() {
