@@ -28,6 +28,10 @@ class Customer {
     return `${this.firstName} ${this.lastName}`;
   }
 
+  set fullName(name) {
+    throw new Error('Sorry, cannot overwrite fullName property');
+  }
+
   /** methods for getting/setting phone #. */
 
   set phone(val) {
