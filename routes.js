@@ -19,6 +19,29 @@ router.get('/', async function(req, res, next) {
   }
 });
 
+/** Search results: show list of customers. */
+
+router.get('/search', async function(req, res, next) {
+  try {
+    const { firstName, lastName } = req.query;
+    const customers = await Customer.getByName(firstName, lastName);
+    return res.render('customer_list.html', { customers });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+/** Show list of top 10 customers. */
+
+router.get('/top-ten', async function(req, res, next) {
+  try {
+    const customers = await Customer.getTopTen();
+    return res.render('customer_list.html', { customers });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 /** Form to add a new customer. */
 
 router.get('/add/', async function(req, res, next) {

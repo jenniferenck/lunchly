@@ -5,6 +5,16 @@
 <a class="btn btn-primary" style="float: right" href="/add/">Add a Customer</a></p>
 
 <h1>Customers</h1>
+<form action="/search" method="get">
+  <div class="input-group input-group-sm mb-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Search</span>
+      </div>
+      <input type="text" aria-label="First name" placeholder="first name" name="firstName" class="form-control">
+      <input type="text" aria-label="Last name" placeholder="last name" name="lastName" class="form-control">
+      <button type="submit" class="btn-sm btn-primary">Search</button>
+    </div>
+</form>
 
 <ul style="column-count: 4">
   {% for customer in customers %}

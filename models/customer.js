@@ -57,6 +57,20 @@ class Customer {
     return results.rows.map(c => new Customer(c));
   }
 
+  /** find top 10 customers. */
+
+  static async getTopTen() {
+    const results = await db.query(
+      `SELECT first_name AS "firstName",  last_name AS "lastName", COUNT(*)
+      FROM customers c
+      JOIN reservations r ON c.id = r.customer_id
+      GROUP BY first_name, last_name
+      ORDER BY COUNT(*) DESC
+      LIMIT 10`
+    );
+    return results.rows.map(c => new Customer(c));
+  }
+
   /** get a customer by ID. */
 
   static async get(id) {
@@ -79,6 +93,29 @@ class Customer {
     }
 
     return new Customer(customer);
+  }
+  /** get a customer by name. */
+
+  static async getByName(firstName, lastName) {
+    const results = await db.query(
+      `SELECT id, 
+         first_name AS "firstName",  
+         last_name AS "lastName", 
+         phone, 
+         notes 
+        FROM customers WHERE first_name = $1 OR last_name = $2`,
+      [firstName, lastName]
+    );
+
+    const customers = results.rows;
+
+    if (customers.length === 0) {
+      const err = new Error(`No such customer: ${(firstName, lastName)}`);
+      err.status = 404;
+      throw err;
+    }
+
+    return results.rows.map(c => new Customer(c));
   }
 
   /** get all reservations for this customer. */
